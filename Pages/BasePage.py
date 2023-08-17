@@ -9,12 +9,30 @@ import utils.logger as cl
 
 
 class BasePage:
+    """
+    This is the base class for Pages directory which allows DRY code.
+
+    The methods are:
+        * waitForElement
+        * getElement
+        * clickElement
+        * sendKeys
+        * isDisplayed
+        * isDisplayed
+    """
     log = cl.customLogger()
 
     def __init__(self, driver):
+        # initiating driver instance
         self.driver = driver
 
     def waitForElement(self, locatorvalue, locatorType):
+        """
+        This method is used to de-redundant WebDriverWait.until function
+        :param locatorvalue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: element
+        """
         locatorType = locatorType.lower()
         element = None
         wait = WebDriverWait(self.driver, 25, poll_frequency=1,
@@ -46,6 +64,12 @@ class BasePage:
         return element
 
     def getElement(self, locatorValue, locatorType="id"):
+        """
+        This method is used to fetch element
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: None
+        """
         element = None
         try:
             locatorType = locatorType.lower()
@@ -60,6 +84,12 @@ class BasePage:
         return element
 
     def clickElement(self, locatorValue, locatorType="id"):
+        """
+        This method is used to click element, it extends the getElement method
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: None
+        """
         element = None
         try:
             locatorType = locatorType.lower()
@@ -74,6 +104,12 @@ class BasePage:
             assert False
 
     def sendKeys(self, text, locatorValue, locatorType):
+        """
+        This method is used to send keys to input type fields, it extends getElement method
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: None
+        """
         element = None
         try:
             locatorType = locatorType.lower()
@@ -88,6 +124,13 @@ class BasePage:
             assert False
 
     def isDisplayed(self, locatorValue, locatorType):
+        """
+        This method is used to check if the element is visible or not, it extends
+        getElement method
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: None
+        """
         element = None
         try:
             locatorType = locatorType.lower()
@@ -102,7 +145,7 @@ class BasePage:
             #self.takeScreenshot(locatorType)
             return False
 
-    def screenShot(self, screenshotName):
+    """def screenShot(self, screenshotName):
         fileName = screenshotName + "_" + (time.strftime("%d_%m_%y_%H_%M_%S")) + ".png"
         screenshotDirectory = "../Saral_App_Automation/Reports/screenshots/"
         screenshotPath = screenshotDirectory + fileName
@@ -113,8 +156,8 @@ class BasePage:
         except:
             self.log.info("Unable to save Screenshot to the Path : " + screenshotPath)
 
-    """def takeScreenshot(self, text):
-        allure.attach(self.driver.get_screenshot_as_png(), name=text, attachment_type=AttachmentType.PNG)"""
+    def takeScreenshot(self, text):
+        allure.attach(self.driver.get_screenshot_as_png(), name=text, attachment_type=AttachmentType.PNG)
 
     def keyCode(self, value):
-        self.driver.press_keycode(value)
+        self.driver.press_keycode(value)"""

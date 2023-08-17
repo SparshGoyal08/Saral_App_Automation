@@ -1,2 +1,4 @@
+REM Check for available devices
 adb devices
-adb install C:\Users\DELL\SaralApp.apk
+REM install Saral.apk to available device
+adb install C:\Users\DELL\Saral_App_Automation\Resources\SaralApp.apk

@@ -3,7 +3,7 @@ class Configs:
     caps["platformName"] = "Android"
     caps["appium:automationName"] = "UIAutomator2"
     caps["appium:platformVersion"] = "11.0"
-    caps["appium:app"] = "C:/Users/DELL/SaralApp.apk"
+    caps["appium:app"] = "C:/Users/DELL/Saral_App_Automation/Resources/SaralApp.apk"
     caps["appium:deviceName"] = "DemoDevice"
     caps["appium:noReset"] = True
     caps["appium:ensureWebviewsHavePages"] = True
