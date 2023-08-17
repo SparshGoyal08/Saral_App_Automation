@@ -84,7 +84,11 @@
 5. Repeat [4] for App/AppiumServe.py as well
 6. Now, go to settings and make sure pytest plugin is installed for PyCharm IDE
 7. Now, go to configurations and create a new configuration.
+
 ![ScreenShot](.\Resources\Screenshot 2023-08-17 154347.png)
+
 8. Click Add a new Configuration, select script and then select the path to your test case
-![ScreenShot](.\Resources\Screenshot 2023-08-17 154833.png)
+
+![ScreenShot](.\Resources\Screenshot.png)
+
 9. Click OK and start the test case.
