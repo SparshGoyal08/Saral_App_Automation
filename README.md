@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./Resources/logo.png" alt="Image Description">
-</p>
-
 # Saral App Automation Project (Android)
 ![Saral](./Resources/SaralLogo.png)
 ## Dependencies
