@@ -92,3 +92,31 @@
 17/08/23 02:48:18 PM Thursday - BasePage - INFO :  Element with LocatorType: xpath and with the locatorValue :/hierarchy.... is not displayed
 17/08/23 02:48:18 PM Thursday - AndroidEmulator - INFO : Uninstall the Saral app and killed the Android emulator
 17/08/23 02:48:18 PM Thursday - AppiumServiceClass - INFO : Appium service is not running
+17/08/23 05:31:27 PM Thursday - <module> - INFO : ********************************* Start Test *********************************
+17/08/23 05:31:27 PM Thursday - AndroidEmulator - INFO : Android emulator initiated
+17/08/23 05:32:07 PM Thursday - AndroidEmulator - INFO : Installing Saral App
+17/08/23 05:32:18 PM Thursday - AppiumServiceClass - INFO : Appium Service started successfully
+17/08/23 05:34:33 PM Thursday - <module> - INFO : ********************************* Start Test *********************************
+17/08/23 05:34:33 PM Thursday - AndroidEmulator - INFO : Android emulator initiated
+17/08/23 05:35:13 PM Thursday - AndroidEmulator - INFO : Installing Saral App
+17/08/23 05:35:14 PM Thursday - AppiumServiceClass - INFO : Appium Service started successfully
+17/08/23 05:39:20 PM Thursday - <module> - INFO : ********************************* Start Test *********************************
+17/08/23 05:39:20 PM Thursday - AndroidEmulator - INFO : Android emulator initiated
+17/08/23 05:40:00 PM Thursday - AndroidEmulator - INFO : Installing Saral App
+17/08/23 05:40:01 PM Thursday - AppiumServiceClass - INFO : Appium Service started successfully
+17/08/23 05:40:26 PM Thursday - BasePage - INFO : Element not found with LocatorType: xpath and with the locatorValue :/hierarchy....
+17/08/23 05:40:26 PM Thursday - BasePage - INFO :  Element with LocatorType: xpath and with the locatorValue :/hierarchy.... is not displayed
+17/08/23 05:40:26 PM Thursday - BasePage - INFO : Element not found with LocatorType: xpath and with the locatorValue :/hierarchy....
+17/08/23 05:40:26 PM Thursday - BasePage - INFO :  Element with LocatorType: xpath and with the locatorValue :/hierarchy.... is not displayed
+17/08/23 05:40:26 PM Thursday - AndroidEmulator - INFO : Uninstall the Saral app and killed the Android emulator
+17/08/23 05:40:26 PM Thursday - AppiumServiceClass - INFO : Appium service is not running
+17/08/23 05:43:10 PM Thursday - <module> - INFO : ********************************* Start Test *********************************
+17/08/23 05:43:10 PM Thursday - AndroidEmulator - INFO : Android emulator initiated
+17/08/23 05:43:50 PM Thursday - AndroidEmulator - INFO : Installing Saral App
+17/08/23 05:43:51 PM Thursday - AppiumServiceClass - INFO : Appium Service started successfully
+17/08/23 05:44:14 PM Thursday - BasePage - INFO : Element not found with LocatorType: xpath and with the locatorValue :/hierarchy....
+17/08/23 05:44:14 PM Thursday - BasePage - INFO :  Element with LocatorType: xpath and with the locatorValue :/hierarchy.... is not displayed
+17/08/23 05:44:14 PM Thursday - BasePage - INFO : Element not found with LocatorType: xpath and with the locatorValue :/hierarchy....
+17/08/23 05:44:14 PM Thursday - BasePage - INFO :  Element with LocatorType: xpath and with the locatorValue :/hierarchy.... is not displayed
+17/08/23 05:44:14 PM Thursday - AndroidEmulator - INFO : Uninstall the Saral app and killed the Android emulator
+17/08/23 05:44:14 PM Thursday - AppiumServiceClass - INFO : Appium service is not running

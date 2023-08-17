@@ -1,32 +1,33 @@
 import utils.logger as cl
 from Pages.BasePage import BasePage
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from appium.webdriver.common.appiumby import By
 
 
 class LoginPage(BasePage):
+    """
+    This class contains the methods for login page. It extends BasePage class as the base page class contains all the
+    necessary methods to de-redundant the code here
 
+    The methods are:
+        * enterMobileNo
+        * ClickNext
+    """
     def __init__(self, driver):
+        # initiating the driver instance from the super (Parent) class
         super().__init__(driver)
         self.driver = driver
 
     MobileNo = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText"
     # MobileNo = "com.saral.application:id/et_mobile"
     NextButton = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.Button"
-
     # NextButton = "Next"
+
     def enterMobileNo(self, no):
-        """Mobile_no = Driver().find_element(AppiumBy.XPATH, "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText")
-        if Mobile_no.is_displayed():
-            print("Input box visible")
-            Mobile_no.send_keys("8287210847")
-        else:
-            print("input box not visible")"""
+        """
+        to enter mobile no. on login page
+        :param no: pass the mobile no. from test case
+        :return: None
+        """
         if self.isDisplayed(self.MobileNo, "xpath"):
-            """mobile_input = WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located((By.XPATH, self.MobileNo))
-            )"""
             print("Input box accessible")
             self.sendKeys(no, self.MobileNo, "xpath")
             cl.allureLogs("Enter Mobile number")
@@ -34,10 +35,10 @@ class LoginPage(BasePage):
             print("Input box not found")
 
     def ClickNext(self):
-        """next_button = Driver().find_element(AppiumBy.XPATH,
-                                            "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.Button")
-        next_button.click()"""
-
+        """
+        Click the next button after entering mobile no.
+        :return: None
+        """
         if self.isDisplayed(self.NextButton, "xpath"):
             self.clickElement(self.NextButton, "xpath")
             cl.allureLogs("Clicking the next button")
