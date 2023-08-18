@@ -1,7 +1,4 @@
 import pytest
-import unittest
 from TestCases.LoginPage_test import LoginTest
-
-LoginPageTest = unittest.TestLoader().loadTestsFromTestCase(LoginTest)
-BasicTest = unittest.TestSuite([LoginPageTest])
-unittest.TextTestRunner(verbosity=1).run(BasicTest)
+if __name__ == "__main__":
+    pytest.main(["-s", "TestCases/LoginPage_test.py"])

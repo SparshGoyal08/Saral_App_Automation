@@ -1,7 +1,5 @@
-import subprocess
 import unittest
 import time
-from selenium.webdriver.support.ui import WebDriverWait
 import pytest
 from Drivers.Drivers import *
 from App.AppiumServer import *
@@ -28,7 +26,6 @@ def setup_teardown(request):
     AppiumServiceInstance.init_appium_server()
     driver_instance = WebDriver()
     driver = driver_instance.init_driver()
-    time.sleep(10)
     yield
     driver.quit()
     AndroidEmulatorInstance.uninstall_app_and_kill_emulator()
@@ -42,6 +39,7 @@ class LoginTest(unittest.TestCase):
     """
     This is login test cases class to test login page
     """
+
     @pytest.fixture(autouse=True)
     def classObjects(self):
         """
@@ -64,3 +62,7 @@ class LoginTest(unittest.TestCase):
         self.LoginPage.enterMobileNo("8287210847")
         self.LoginPage.ClickNext()
         assert "OTP"
+
+
+if __name__ == "__main__":
+    pytest.main(["-s", "LoginPage_test.py"])
