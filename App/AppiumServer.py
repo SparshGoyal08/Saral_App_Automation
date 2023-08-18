@@ -1,3 +1,5 @@
+import subprocess
+
 from appium.webdriver.appium_service import AppiumService
 import utils.logger as cl
 
