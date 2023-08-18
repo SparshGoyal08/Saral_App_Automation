@@ -1,3 +1,4 @@
+import subprocess
 import unittest
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,6 +8,7 @@ from App.AppiumServer import *
 from App.AndroidEmulator import AndroidEmulator
 from Pages.LoginPage import LoginPage
 import utils.logger as cl
+import allure
 
 # initiating logger instance
 log = cl.customLogger()
@@ -22,7 +24,6 @@ def setup_teardown(request):
     AndroidEmulatorInstance = AndroidEmulator()
     AndroidEmulatorInstance.init_android_emulator()
     time.sleep(40)
-    AndroidEmulatorInstance.install_Saral_apk()
     AppiumServiceInstance = AppiumServiceClass()
     AppiumServiceInstance.init_appium_server()
     driver_instance = WebDriver()
@@ -32,9 +33,11 @@ def setup_teardown(request):
     driver.quit()
     AndroidEmulatorInstance.uninstall_app_and_kill_emulator()
     AppiumServiceInstance.stop_appium_server()
+    subprocess.Popen("C:/Users/DELL/Saral_App_Automation/Resources/AllureReport.bat")
 
 
 @pytest.mark.usefixtures("setup_teardown")
+@allure.severity(allure.severity_level.BLOCKER)
 class LoginTest(unittest.TestCase):
     """
     This is login test cases class to test login page

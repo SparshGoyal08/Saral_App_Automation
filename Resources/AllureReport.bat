@@ -1,0 +1,1 @@
+allure serve C:\Users\DELL\Saral_App_Automation\Reports\

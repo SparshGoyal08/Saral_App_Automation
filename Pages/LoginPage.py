@@ -16,10 +16,8 @@ class LoginPage(BasePage):
         super().__init__(driver)
         self.driver = driver
 
-    MobileNo = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText"
-    # MobileNo = "com.saral.application:id/et_mobile"
-    NextButton = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.widget.Button"
-    # NextButton = "Next"
+    MobileNo = "com.saral.application:id/et_mobile"
+    NextButton = "Next"
 
     def enterMobileNo(self, no):
         """
@@ -27,9 +25,9 @@ class LoginPage(BasePage):
         :param no: pass the mobile no. from test case
         :return: None
         """
-        if self.isDisplayed(self.MobileNo, "xpath"):
+        if self.isDisplayed(self.MobileNo, "id"):
             print("Input box accessible")
-            self.sendKeys(no, self.MobileNo, "xpath")
+            self.sendKeys(no, self.MobileNo, "id")
             cl.allureLogs("Enter Mobile number")
         else:
             print("Input box not found")
@@ -39,8 +37,8 @@ class LoginPage(BasePage):
         Click the next button after entering mobile no.
         :return: None
         """
-        if self.isDisplayed(self.NextButton, "xpath"):
-            self.clickElement(self.NextButton, "xpath")
+        if self.isDisplayed(self.NextButton, "text"):
+            self.clickElement(self.NextButton, "text")
             cl.allureLogs("Clicking the next button")
         else:
             print("cannot find the next button")

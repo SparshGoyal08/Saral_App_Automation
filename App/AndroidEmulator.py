@@ -8,7 +8,6 @@ class AndroidEmulator:
 
     The methods are
         * init_android_emulator
-        * install_Saral_apk, and
         * uninstall_app_and_kill_emulator
     """
     log = cl.customLogger()
@@ -18,7 +17,6 @@ class AndroidEmulator:
         self.subprocess = subprocess.Popen
 
     emulator_bat = "C:/Users/DELL/Saral_App_Automation/Resources/init_emulator.bat"
-    install_apk = "C:/Users/DELL/Saral_App_Automation/Resources/install_Saral_apk.bat"
     emulator_kill = "C:/Users/DELL/Saral_App_Automation/Resources/kill_emulator.bat"
 
     def init_android_emulator(self):
@@ -28,14 +26,6 @@ class AndroidEmulator:
         """
         self.subprocess(self.emulator_bat)
         self.log.info("Android emulator initiated")
-
-    def install_Saral_apk(self):
-        """
-        This method installs the Saral app to the Android emulator using the batch (.bat)
-        file
-        """
-        self.subprocess(self.install_apk)
-        self.log.info("Installing Saral App")
 
     def uninstall_app_and_kill_emulator(self):
         """

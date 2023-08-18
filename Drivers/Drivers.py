@@ -6,6 +6,7 @@ class WebDriver:
     """
     This class is responsible for initiating a new driver
     """
+
     def __init__(self):
         # initiating webdriver class
         self.driver = webdriver.Remote
@@ -19,3 +20,8 @@ class WebDriver:
         desired_caps = Configs.caps
         driver = self.driver("http://127.0.0.1:4723", desired_caps)
         return driver
+
+
+if __name__ == "__main__":
+    driver = WebDriver()
+    driver.init_driver()
