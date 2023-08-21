@@ -1,0 +1,21 @@
+# Ignore pytest files
+*.pytest_cache/
+
+# Ignore editor/IDE specific files and directories
+*.idea/
+
+# Ignore allure reports and Logs
+*LocalLogs/TestRunLogs.log
+*AllureReport/
+
+# Ignore __pycache__
+*/__pycache__/
+*__pycache__/
+*.__pycache__/
+
+# Ignore Deprecated Code
+*deprecated_code
+
+# Ignore POM.xml file
+# Todo Configure POM.xml file for future configuration
+POM.xml
