@@ -1,4 +1,9 @@
 import pytest
-from TestCases.LoginPage_test import LoginTest
-if __name__ == "__main__":
+
+
+def suite():
     pytest.main(["-s", "TestCases/LoginPage_test.py"])
+
+
+if __name__ == "__main__":
+    suite()

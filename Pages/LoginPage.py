@@ -28,7 +28,6 @@ class LoginPage(BasePage):
         if self.isDisplayed(self.MobileNo, "id"):
             print("Input box accessible")
             self.sendKeys(no, self.MobileNo, "id")
-            cl.allureLogs("Enter Mobile number")
         else:
             print("Input box not found")
 
@@ -38,7 +37,7 @@ class LoginPage(BasePage):
         :return: None
         """
         if self.isDisplayed(self.NextButton, "text"):
+            print("Found Next button")
             self.clickElement(self.NextButton, "text")
-            cl.allureLogs("Clicking the next button")
         else:
             print("cannot find the next button")

@@ -19,7 +19,7 @@ def customLogger():
     logger.setLevel(logging.DEBUG)
 
     # Create the fileHandler to save the logs in the file
-    fileHandler = logging.FileHandler("C:/Users/DELL/Saral_App_Automation/Reports/TestRunLogs.log", mode='a')
+    fileHandler = logging.FileHandler("C:/Users/DELL/Saral_App_Automation/LocalLogs/TestRunLogs.log", mode='a')
 
     # Set the logLevel for fileHandler
     fileHandler.setLevel(logging.DEBUG)

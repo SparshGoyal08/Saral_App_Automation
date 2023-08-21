@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from appium.webdriver.common.appiumby import AppiumBy
 from Drivers.Drivers import WebDriver
 import utils.logger as cl
+from urllib3.exceptions import MaxRetryError
 
 
 class BasePage:
@@ -38,7 +39,7 @@ class BasePage:
         element = None
         wait = WebDriverWait(self.web, 25, poll_frequency=1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException,
-                                                 NoSuchElementException])
+                                                 NoSuchElementException, MaxRetryError, KeyboardInterrupt])
         if locatorType == "id":
             element = wait.until(lambda x: x.find_element(AppiumBy.ID, locatorvalue))
             return element
@@ -156,7 +157,7 @@ class BasePage:
 
     def screenShot(self, screenshotName):
         fileName = screenshotName + "_" + (time.strftime("%d_%m_%y_%H_%M_%S")) + ".png"
-        screenshotDirectory = "../Saral_App_Automation/Reports/screenshots/"
+        screenshotDirectory = "../Saral_App_Automation/LocalLogs/screenshots/"
         screenshotPath = screenshotDirectory + fileName
         try:
             self.web.save_screenshot(screenshotPath)
