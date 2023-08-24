@@ -1,12 +1,16 @@
 import time
+import traceback
+
 import allure
 from allure_commons.types import AttachmentType
+from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import *
 from selenium.webdriver.support.ui import WebDriverWait
-from appium.webdriver.common.appiumby import AppiumBy
-from Drivers.Drivers import WebDriver
-import utils.logger as cl
 from urllib3.exceptions import MaxRetryError
+from uiautomator import Device
+
+import utils.logger as cl
+from Drivers.Drivers import WebDriver
 
 
 class BasePage:
@@ -60,6 +64,8 @@ class BasePage:
         elif locatorType == "xpath":
             element = wait.until(lambda x: x.find_element(AppiumBy.XPATH, '%s' % locatorvalue))
             return element
+        elif locatorType == "keycode":
+            element = wait.until(lambda x: x.press_keycode(locatorvalue))
         else:
             self.log.info("Locator value " + locatorvalue + "not found")
 
@@ -76,16 +82,22 @@ class BasePage:
         try:
             locatorType = locatorType.lower()
             element = self.waitForElement(locatorValue, locatorType)
-            self.log.info("Element found with LocatorType: " + locatorType + " with the locatorValue :" + locatorValue[
-                                                                                                          :10] + "....")
+            self.log.info("Element found with LocatorType: " + locatorType + " with the locatorValue :" + locatorValue)
         except:
             self.log.info(
-                "Element not found with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                                        :10] + "....")
+                "Element not found with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
             self.takeScreenshot(locatorType)
-            assert False
 
         return element
+
+    def getToast(self):
+        """
+        Todo : Need to optimize this @SPBhadra08
+        getToast method is used to fetch the toast message on screen
+        :return: toast message
+        """
+        toast = Device().toast.get_message()
+        return toast
 
     def clickElement(self, locatorValue, locatorType="id"):
         """
@@ -100,14 +112,11 @@ class BasePage:
             element = self.getElement(locatorValue, locatorType)
             element.click()
             self.log.info(
-                "Clicked on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                                         :10] + "....")
+                "Clicked on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
         except:
             self.log.info(
-                "Unable to click on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                                                 :10] + "....")
+                "Unable to click on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
             self.takeScreenshot(locatorType)
-            assert False
 
     def sendKeys(self, text, locatorValue, locatorType):
         """
@@ -122,14 +131,50 @@ class BasePage:
             element = self.getElement(locatorValue, locatorType)
             element.send_keys(text)
             self.log.info(
-                "Send text  on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                                            :10] + "....")
+                "Send text  on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
         except:
             self.log.info(
-                "Unable to send text on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                                                     :10] + "....")
+                "Unable to send text on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
             self.takeScreenshot(locatorType)
-            assert False
+
+    def is_empty(self, locatorValue, locatorType):
+        """
+        Check if the input field is empty or not
+        :param locatorValue:
+        :param locatorType:
+        :return:
+        """
+        element = None
+        try:
+            pass
+            locatorType = locatorType.lower()
+            element = self.getElement(locatorValue, locatorType)
+            attr = element.get_attributes()
+            self.log.info(f"Found following attributes that needs to be cleared\n {attr}")
+            return attr
+        except:
+            self.log.info("No attributes found to be cleared off")
+            self.takeScreenshot(locatorType)
+
+    def clear(self, locatorValue, locatorType):
+        """
+        Clear the input field in order to fill new values
+        :param locatorValue:
+        :param locatorType:
+        :return:
+        """
+        element = None
+        try:
+            locatorType = locatorType.lower()
+            element = self.getElement(locatorValue, locatorType)
+            element.clear()
+            self.log.info(
+                "Element with locatorType: " + locatorType + " and locatorValue: " + locatorValue + " is cleared")
+            return True
+        except:
+            self.log.info(
+                "Element with locatorType: " + locatorType + " and locatorValue: " + locatorValue + " is not cleared")
+            self.takeScreenshot(locatorType)
 
     def isDisplayed(self, locatorValue, locatorType):
         """
@@ -145,13 +190,11 @@ class BasePage:
             element = self.getElement(locatorValue, locatorType)
             element.is_displayed()
             self.log.info(
-                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                               :10] + "...." + "is displayed ")
+                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue + "is displayed ")
             return True
         except:
             self.log.info(
-                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue[
-                                                                                               :10] + "...." + " is not displayed")
+                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue + " is not displayed")
             self.takeScreenshot(locatorType)
             return False
 
@@ -162,8 +205,8 @@ class BasePage:
         try:
             self.web.save_screenshot(screenshotPath)
             self.log.info("Screenshot save to Path : " + screenshotPath)
-
-        except:
+        except WebDriverException as we:
+            traceback.print_exc()
             self.log.info("Unable to save Screenshot to the Path : " + screenshotPath)
 
     def takeScreenshot(self, text):

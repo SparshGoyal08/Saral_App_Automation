@@ -20,8 +20,3 @@ class WebDriver:
         desired_caps = Configs.caps
         driver = self.driver("http://127.0.0.1:4723", desired_caps)
         return driver
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    driver.init_driver()
