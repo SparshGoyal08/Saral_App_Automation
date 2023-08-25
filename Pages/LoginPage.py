@@ -1,5 +1,5 @@
-from selenium.common.exceptions import WebDriverException
-
+from selenium.common.exceptions import *
+import traceback
 from Pages.BasePage import BasePage
 
 
@@ -31,26 +31,34 @@ class LoginPage(BasePage):
         :param no: pass the mobile no. from test case
         :return: None
         """
-        self.sendKeys(no, self.MobileNo, "id")
+        try:
+            self.sendKeys(no, self.MobileNo, "id")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
 
     def ClickNext(self):
         """
         Click the next button after entering mobile no.
         :return: None
         """
-        print("Found Next button")
-        self.clickElement(self.NextButton, "text")
+        try:
+            print("Found Next button")
+            self.clickElement(self.NextButton, "text")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
 
     def clearOTP(self):
         """
         clear OTP field
-        :return:
+        :return: None
         """
         try:
             self.clear(self.otp, "id")
             self.log.info("Cleared OTP field")
-        except WebDriverException as e:
-            if self.isDisplayed("Saral won't run unless you update Google Play services.", "text"):
+        except NoSuchElementException:
+            if self.isDisplayed("android:id/message", "id"):
                 self.log.info("Identified an error related to app, trying to resolve, please wait!")
                 self.clickElement("0", "index")
                 self.clickElement(187, "keycode")
@@ -58,20 +66,28 @@ class LoginPage(BasePage):
                 self.clear(self.otp, "id")
                 self.log.info("Cleared OTP field")
             else:
-                print("Webdriver Exception Encountered")
+                print("NoSuchElementException Encountered")
 
     def enterOTP(self, otp):
         """
         Enter OTP in the OTP inout field
-        :return:
+        :return: None
         """
-        self.sendKeys(otp, self.otp, "id")
-        self.log.info(f"Entered OTP {otp}")
+        try:
+            self.sendKeys(otp, self.otp, "id")
+            self.log.info(f"Entered OTP {otp}")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
 
     def ClickSubmit(self):
         """
         Click Submit button After entering OTP
-        :return:
+        :return: None
         """
-        self.clickElement(self.submit, "text")
-        self.log.info("Clicked on Submit button")
+        try:
+            self.clickElement(self.submit, "text")
+            self.log.info("Clicked on Submit button")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
