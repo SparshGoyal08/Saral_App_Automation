@@ -9,18 +9,23 @@ class PradeshLevelDEPage(BasePage):
     This class contains all the methods needed to interact with elements on Pradesh Level Data Entry page
 
     The methods are:
-        * choosePradesh
+        * pradeshIsEnabled
         * fetchSubUnits
         * fetchDataBySubUnit
         * changeMorcha
         * changeCell
         * getTotalCount
+        * fetchSortingTypes
         * checkSortedBy
         * changeSortingType
         * openKaryakartaDetailsPage
+        * goBackPradeshLevelDEPage
         * swipeOnKaryakarta
-        * KaryakartaService
+        * fetchKaryakartaServices
+        * clickOnKaryakartaService
+        * karyakartaDeleteServiceActions
         * clickCallOnKaryakarta
+        * close
     """
 
     def __init__(self, driver):
@@ -32,19 +37,37 @@ class PradeshLevelDEPage(BasePage):
     TvLocation = "com.saral.application:id/tv_location"
     UnitsRow = "com.saral.application:id/rv_units"
     TotalCount = "com.saral.application:id/tv_count"
-    SortingTypes = ["Last Entered", "Designation", "A-Z"]
     KaryakartaList = "com.saral.application:id/rv_karyakarta"
     Karyakarta = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView[2]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView[1]"
     CallIcon = "com.saral.application:id/iv_call"
+    CloseButton = "com.saral.application:id/iv_close"
+    OfficeBearer = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView[1]/android.view.ViewGroup[1]/android.widget.TextView"
+    Karyakarni = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView[1]/android.view.ViewGroup[2]/android.widget.TextView"
+    Council = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView[1]/android.view.ViewGroup[3]/android.widget.TextView"
+    LastEntered = "com.saral.application:id/tv_date"
+    Designation = "com.saral.application:id/tv_designation"
+    A_Z = "com.saral.application:id/tv_alphabet"
+    Verify = "com.saral.application:id/tv_verify"
+    Edit = "com.saral.application:id/tv_edit"
+    Delete = "com.saral.application:id/tv_delete"
+    BackButton = "com.saral.application:id/iv_back"
+    SortingTypes = []
+    SubUnits = []
+    KaryakartaServices = []
 
-    def choosePradesh(self):
+    def pradeshIsEnabled(self, pradesh: str):
         """
         Choose Pardesh name when entering Sangathan Page first time
         :return: None
         """
         try:
             self.clickElement(self.TvLocation, "id")
-            self.log.info("Clicked on Change Pradesh drop down")
+            if self.isEnabled(pradesh, "text"):
+                self.log.info(pradesh + " is enabled")
+                return True
+            else:
+                self.log.info(pradesh + " is not enabled")
+                return False
         except Exception as e:
             # self.ExceptionHandler.handleException(self.driver, e)
             traceback.print_exception(type(e), e, e.__traceback__)
@@ -55,10 +78,11 @@ class PradeshLevelDEPage(BasePage):
         :return: Subunit names
         """
         try:
-            OfficeBearer = self.getElement("Office Bearer", "text")
-            Karyakarni = self.getElement("Karyakarni", "text")
-            Council = self.getElement("Council", "text")
-            return OfficeBearer, Karyakarni, Council
+            self.SubUnits.append(self.getText(self.OfficeBearer, "xpath"))
+            self.SubUnits.append(self.getText(self.Karyakarni, "xpath"))
+            self.SubUnits.append(self.getText(self.Council, "xpath"))
+            self.log.info("Fetched the list of SubUnits:\n" + str(self.SubUnits))
+            return self.SubUnits
         except Exception as e:
             # self.ExceptionHandler.handleException(self.driver, e)
             traceback.print_exception(type(e), e, e.__traceback__)
@@ -83,7 +107,7 @@ class PradeshLevelDEPage(BasePage):
         :return: None
         """
         try:
-            self.swipe(self.UnitsRow, "id", 850, 500, 250, 500, 100)
+            self.swipe(900, 510, 200, 510)
             self.clickElement("Morcha", "text")
             self.clickElement(morchaname, "text")
             self.log.info("Changed Morcha type to: " + morchaname)
@@ -98,7 +122,7 @@ class PradeshLevelDEPage(BasePage):
         :return: None
         """
         try:
-            self.swipe(self.UnitsRow, "id", 850, 500, 250, 500, 100)
+            self.swipe(850, 500, 250, 500)
             self.clickElement("Cell", "text")
             self.clickElement(cellname, "text")
             self.log.info("Changed Cell type to: " + cellname)
@@ -112,25 +136,23 @@ class PradeshLevelDEPage(BasePage):
         :return: Total Count value (str)
         """
         try:
-            Total_Count = self.getElement(self.TotalCount, "id")
+            Total_Count = self.getText(self.TotalCount, "id")
             self.log.info("The " + Total_Count[0:7] + "is " + Total_Count[7:])
             return Total_Count
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
-    def checkSortedBy(self):
+    def fetchSortingTypes(self):
         """
-        Check which attributes is used for sorting now
-        :return: None
+        Fetch and Store Sorting types
+        :return: list(SortingTypes)
         """
         try:
-            for SortingType in self.SortingTypes:
-                if self.isEnabled(SortingType, "text"):
-                    self.log.info("Current Sorting Type is: " + SortingType)
-                    CurrentSortingType = SortingType
-                    return CurrentSortingType
-                else:
-                    continue
+            self.SortingTypes.append(self.getText(self.LastEntered, "id"))
+            self.SortingTypes.append(self.getText(self.Designation, "id"))
+            self.SortingTypes.append(self.getText(self.A_Z, "id"))
+            self.log.info("Fetched Sorting types:\n" + str(self.SortingTypes))
+            return self.SortingTypes
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
@@ -138,15 +160,11 @@ class PradeshLevelDEPage(BasePage):
         """
         Change the sorting type
         :param sortingtype: sorting type attribute
-        :return:
+        :return: None
         """
         try:
-            if sortingtype != self.checkSortedBy():
-                self.clickElement(sortingtype, "text")
-                self.log.info("Changed the sorting type to: " + sortingtype)
-            else:
-                print(sortingtype + " is already selected, choose another sorting type from\n" + self.SortingTypes)
-                self.changeSortingType(sortingtype)
+            self.clickElement(sortingtype, "text")
+            self.log.info("Changed the sorting type to: " + sortingtype)
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
@@ -161,17 +179,49 @@ class PradeshLevelDEPage(BasePage):
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
+    def goBackPradeshLevelDEPage(self):
+        """
+        Go back to Pradesh Level DE Page from Karyakarta details page
+        :return: None
+        """
+        try:
+            self.clickElement(self.BackButton, "id")
+            self.log.info("Going Back to Pradesh Level Data Entry Page")
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
     def swipeOnKaryakarta(self):
         """
         Swipe on karyakarta row to reveal services
         :return: None
         """
         try:
-            self.swipe(self.Karyakarta, "xpath", 850, 920, 250, 920, 100)
+            self.swipe(850, 920, 250, 920)
+            self.log.info("Swiping on Karyakarta record to view services")
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
-    def KaryakartaService(self, servicename):
+    def fetchKaryakartaServices(self):
+        """
+        Fetch all the services that are visible on swiping on Karyakarta record
+        :return: list(KaryakartaServices)
+        """
+        try:
+            if self.isDisplayed(self.Verify, "id"):
+                self.KaryakartaServices.append(self.getText(self.Verify, "id"))
+                self.log.info("Verify Service available, adding it to list")
+            if self.isDisplayed(self.Edit, "id"):
+                self.KaryakartaServices.append(self.getText(self.Edit, "id"))
+                self.log.info("Edit Service available, adding it to list")
+            if self.isDisplayed(self.Delete, "id"):
+                self.KaryakartaServices.append(self.getText(self.Delete, "id"))
+                self.log.info("Delete Service available, adding it to list")
+            self.log.info("Services identified are:\n" + str(self.KaryakartaServices))
+            return self.KaryakartaServices
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    def clickOnKaryakartaService(self, servicename):
         """
         Click on Service name after swiping
         :param servicename: name of the service
@@ -180,6 +230,18 @@ class PradeshLevelDEPage(BasePage):
         try:
             self.clickElement(servicename, "text")
             self.log.info("Clicked on " + servicename + " service")
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    def karyakartaDeleteServiceActions(self, action):
+        """
+        Select options based on action provided in test on delete form
+        :param action: Action type
+        :return: None
+        """
+        try:
+            self.clickElement(action, "text")
+            self.log.info("Clicked on Action: " + action)
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
@@ -192,4 +254,16 @@ class PradeshLevelDEPage(BasePage):
             self.clickElement(self.CallIcon, "id")
             self.log.info("Clicked on Call Icon")
         except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    def close(self):
+        """
+        Close dialogue box
+        :return: None
+        """
+        try:
+            self.clickElement(self.CloseButton, "id")
+            self.log.info("Close dialogue box")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
             traceback.print_exception(type(e), e, e.__traceback__)

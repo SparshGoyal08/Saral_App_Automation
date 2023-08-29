@@ -1,4 +1,5 @@
 import time
+import traceback
 
 import allure
 from allure_commons.types import AttachmentType
@@ -33,7 +34,7 @@ class BasePage:
         self.driver = driver
         self.web = WebDriver().init_driver()
 
-    def waitForElement(self, locatorvalue, locatorType):
+    def waitForElement(self, locatorvalue: str, locatorType: str):
         """
         This method is used to de-redundant WebDriverWait.until function
         :param locatorvalue: To pass locator value
@@ -72,12 +73,12 @@ class BasePage:
 
         return element
 
-    def getElement(self, locatorValue, locatorType):
+    def getElement(self, locatorValue: str, locatorType: str):
         """
         This method is used to fetch element
         :param locatorValue: To pass locator value
         :param locatorType: To pass locator type
-        :return: None
+        :return: element
         """
         element = None
         try:
@@ -92,6 +93,29 @@ class BasePage:
 
         return element
 
+    def getText(self, locatorValue: str, locatorType: str):
+        """
+        Todo @SPBhadra08 use this for getToast method, remove this Todo line after
+        Get text method to get the text value associated with an element
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: Text from the element
+        """
+        element = None
+        text = None
+        try:
+            locatorType = locatorType.lower()
+            element = self.getElement(locatorValue, locatorType)
+            text = element.text
+            self.log.info(
+                "Element with LocatorType: " + locatorType + " and locatorValue :" + locatorValue + " has text :" + text)
+            return text
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            self.log.info(
+                "Element with LocatorType: " + locatorType + " and locatorValue :" + locatorValue + " does not have text :" + text)
+            self.takeScreenshot(locatorType)
+
     def getToast(self):
         """
         Todo : Need to optimize this @SPBhadra08
@@ -101,7 +125,7 @@ class BasePage:
         toast = Device().toast.get_message()
         return toast
 
-    def clickElement(self, locatorValue, locatorType="id"):
+    def clickElement(self, locatorValue: str, locatorType="id"):
         """
         This method is used to click element, it extends the getElement method
         :param locatorValue: To pass locator value
@@ -121,9 +145,10 @@ class BasePage:
                 "Unable to click on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
             self.takeScreenshot(locatorType)
 
-    def sendKeys(self, text, locatorValue, locatorType):
+    def sendKeys(self, text, locatorValue: str, locatorType: str):
         """
         This method is used to send keys to input type fields, it extends getElement method
+        :param text: text value to be passed
         :param locatorValue: To pass locator value
         :param locatorType: To pass locator type
         :return: None
@@ -141,12 +166,12 @@ class BasePage:
                 "Unable to send text on Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue)
             self.takeScreenshot(locatorType)
 
-    def isEmpty(self, locatorValue, locatorType):
+    def isEmpty(self, locatorValue: str, locatorType: str):
         """
         Check if the input field is empty or not
         :param locatorValue:
         :param locatorType:
-        :return:
+        :return: None
         """
         element = None
         try:
@@ -161,12 +186,12 @@ class BasePage:
             self.log.info("No attributes found to be cleared off")
             self.takeScreenshot(locatorType)
 
-    def clear(self, locatorValue, locatorType):
+    def clear(self, locatorValue: str, locatorType: str):
         """
         Clear the input field in order to fill new values
         :param locatorValue:
         :param locatorType:
-        :return:
+        :return: True: if clear() else: False
         """
         element = None
         try:
@@ -183,8 +208,7 @@ class BasePage:
             self.takeScreenshot(locatorType)
             return False
 
-    def swipe(self, locatorValue: str, locatorType: str, start_x: int, start_y: int, end_x: int, end_y: int,
-              duration: int):
+    def swipe(self, start_x: int, start_y: int, end_x: int, end_y: int):
         """
         Swipe method is used to swipe on the page based on x and y co-ordinates
         :param locatorValue: Get the locator Value of Carousel or page to swipe on
@@ -193,7 +217,6 @@ class BasePage:
         :param start_y: Start point for vertical scroll
         :param end_x: End point for horizontal scroll
         :param end_y: End point for vertical scroll
-        :param duration: duration for which scrolling will take place
         :parameter:
             1. Vertical Scroll: start_x == end_x
             2. Horizontal Scroll: start_y == end_y
@@ -205,22 +228,21 @@ class BasePage:
         """
         element = None
         try:
-            locatorType = locatorType.lower()
-            element = self.getElement(locatorValue, locatorType)
-            element.swipe(start_x, start_y, end_x, end_y, duration)
-            self.log.info("Swipe function on Caraousel " + locatorType + " is taking place")
+            self.web.swipe(start_x, start_y, end_x, end_y, duration=100)
+            self.log.info("Swipe function on Carousel is taking place")
         except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
             # self.ExceptionHandler.handleException(self.driver, e)
-            self.log.info("Swipe function on Caraousel " + locatorType + " is taking place")
-            self.takeScreenshot(locatorType)
+            self.log.info("Swipe function on Carousel is taking place")
+            self.takeScreenshot("Carousel")
 
-    def isDisplayed(self, locatorValue, locatorType):
+    def isDisplayed(self, locatorValue: str, locatorType: str):
         """
         This method is used to check if the element is visible or not, it extends
         getElement method
         :param locatorValue: To pass locator value
         :param locatorType: To pass locator type
-        :return: True or False based on response
+        :return: True: if isDisplayed() else: False
         """
         element = None
         try:
@@ -237,12 +259,12 @@ class BasePage:
             self.takeScreenshot(locatorType)
             return False
 
-    def isEnabled(self, locatorValue, locatorType):
+    def isEnabled(self, locatorValue: str, locatorType: str):
         """
         Method to check if an element is enabled or not
         :param locatorValue: To pass locator value
         :param locatorType: To pass locator type
-        :return: Enabled element
+        :return: True: if isEnabled else: False
         """
         element = None
         try:
