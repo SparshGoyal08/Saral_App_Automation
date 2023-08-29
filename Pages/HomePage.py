@@ -1,6 +1,7 @@
 import traceback
 from selenium.common.exceptions import *
 from Pages.BasePage import BasePage
+from Pages.ProfilePage import ProfilePage
 
 
 class HomePage(BasePage):
@@ -30,7 +31,8 @@ class HomePage(BasePage):
             if self.clickElement(self.HomePage, "id"):
                 self.log.info("Clicked on Home Page")
         except Exception as e:
-            self.ExceptionHandler.handleException(self.driver, e)
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
 
     def clickSangathan(self):
         """
@@ -52,6 +54,17 @@ class HomePage(BasePage):
         try:
             if self.clickElement(self.SocialMediaCard, "xpath"):
                 self.log.info("Clicked on Social Media Card")
+        except Exception as e:
+            # self.ExceptionHandler.handleException(self.driver, e)
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    def goBackHomePage(self):
+        """
+        Go back to home page by clicking back button
+        :return:
+        """
+        try:
+            self.clickElement(ProfilePage(self).BackButton, "id")
         except Exception as e:
             # self.ExceptionHandler.handleException(self.driver, e)
             traceback.print_exception(type(e), e, e.__traceback__)

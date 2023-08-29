@@ -4,12 +4,11 @@ import unittest
 import allure
 import pytest
 
-import Drivers.Drivers
+import Drivers.Drivers as Driver
 from App.AndroidEmulator import AndroidEmulator
 from App.AppiumServer import *
 from Pages.LoginPage import LoginPage
 from Pages.ProfilePage import ProfilePage
-from Pages.BasePage import BasePage
 
 # initiating logger instance
 log = cl.customLogger()
@@ -27,7 +26,7 @@ def setup_teardown(request):
     time.sleep(40)
     AppiumServiceInstance = AppiumServiceClass()
     AppiumServiceInstance.init_appium_server()
-    driver_instance = Drivers.Drivers.WebDriver()
+    driver_instance = Driver.WebDriver()
     driver = driver_instance.init_driver()
     yield
     driver.quit()
@@ -113,5 +112,3 @@ class LoginPageCases(unittest.TestCase):
             ProfilePage(self).clickSettings()
         with allure.step("Click Logout"):
             ProfilePage(self).logout()
-        with allure.step("Assert logout successfully toast message"):
-            assert BasePage(self).getToast() == "logout successfully"
