@@ -30,7 +30,6 @@ def setup_teardown(request):
     driver_instance = Driver.WebDriver()
     driver = driver_instance.init_driver()
     yield
-    driver.quit()
     AndroidEmulatorInstance.uninstall_app_and_kill_emulator()
     AppiumServiceInstance.stop_appium_server()
     subprocess.Popen("C:/Users/DELL/Saral_App_Automation/Resources/AllureReport.bat")
@@ -259,4 +258,3 @@ class PradeshLevelDEPageCases(unittest.TestCase):
         """
         with allure.step("Click on call button next to a Karyakarta"):
             PradeshLevelDEPage(self).clickCallOnKaryakarta()
-

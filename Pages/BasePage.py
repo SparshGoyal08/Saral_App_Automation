@@ -49,6 +49,9 @@ class BasePage:
         if locatorType == "id":
             element = wait.until(lambda x: x.find_element(AppiumBy.ID, locatorvalue))
             return element
+        elif locatorType == "accessibility id":
+            element = wait.until(lambda x: x.find_element(AppiumBy.ACCESSIBILITY_ID, locatorvalue))
+            return element
         elif locatorType == "class":
             element = wait.until(lambda x: x.find_element(AppiumBy.CLASS_NAME, locatorvalue))
             return element
@@ -113,7 +116,7 @@ class BasePage:
         except Exception as e:
             # self.ExceptionHandler.handleException(self.driver, e)
             self.log.info(
-                "Element with LocatorType: " + locatorType + " and locatorValue :" + locatorValue + " does not have text :" + text)
+                "Element with LocatorType: " + locatorType + " and locatorValue :" + locatorValue + " does not have text")
             self.takeScreenshot(locatorType)
 
     def getToast(self):
@@ -169,8 +172,8 @@ class BasePage:
     def isEmpty(self, locatorValue: str, locatorType: str):
         """
         Check if the input field is empty or not
-        :param locatorValue:
-        :param locatorType:
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
         :return: None
         """
         element = None
@@ -189,8 +192,8 @@ class BasePage:
     def clear(self, locatorValue: str, locatorType: str):
         """
         Clear the input field in order to fill new values
-        :param locatorValue:
-        :param locatorType:
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
         :return: True: if clear() else: False
         """
         element = None
@@ -211,8 +214,8 @@ class BasePage:
     def swipe(self, start_x: int, start_y: int, end_x: int, end_y: int):
         """
         Swipe method is used to swipe on the page based on x and y co-ordinates
-        :param locatorValue: Get the locator Value of Carousel or page to swipe on
-        :param locatorType: Type of the locator
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
         :param start_x: Start point for horizontal scroll
         :param start_y: Start point for vertical scroll
         :param end_x: End point for horizontal scroll
@@ -236,6 +239,26 @@ class BasePage:
             self.log.info("Swipe function on Carousel is taking place")
             self.takeScreenshot("Carousel")
 
+    def scrollIntoView(self, locatorValue, locatorType):
+        """
+        Scroll into view allows scrolling until a specific element is visible
+        :param locatorValue: To pass locator value
+        :param locatorType: To pass locator type
+        :return: None
+        """
+        element = None
+        try:
+            if locatorType == "text":
+                self.web.find_element(AppiumBy.ANDROID_UIAUTOMATOR, "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"" + locatorValue + "\").instance(0))")
+            if locatorType == "xpath":
+                self.web.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                      "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().xpath(\"" + locatorValue + "\").instance(0))")
+            if locatorType == "id":
+                self.web.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                      "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().id(\"" + locatorValue + "\").instance(0))")
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
     def isDisplayed(self, locatorValue: str, locatorType: str):
         """
         This method is used to check if the element is visible or not, it extends
@@ -250,7 +273,7 @@ class BasePage:
             element = self.getElement(locatorValue, locatorType)
             element.is_displayed()
             self.log.info(
-                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue + "is displayed ")
+                " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue + " is displayed ")
             return True
         except Exception as e:
             # self.ExceptionHandler.handleException(self.driver, e)
@@ -280,6 +303,18 @@ class BasePage:
                 " Element with LocatorType: " + locatorType + " and with the locatorValue :" + locatorValue + " is not enabled")
             self.takeScreenshot(locatorType)
             return False
+
+    def pushFile(self, destinationPath, sourcePath):
+        """
+        Push File to AVD
+        :param destinationPath: Destination path
+        :param sourcePath: Source Path
+        :return: None
+        """
+        try:
+            self.web.push_file(destinationPath, sourcePath)
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
 
     def screenShot(self, screenshotName):
         """

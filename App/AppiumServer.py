@@ -20,11 +20,13 @@ class AppiumServiceClass:
     def init_appium_server(self):
         """
         This method Starts a new Appium Service
+
+        * --allow-cors to allow appium to listen to Event activities even if the AVD is running on a different source
+        * --session-override to override previous sessions instead of starting a new session for every new event
         """
         args = {
-            # --allow-cors to allow appium to listen to API activities even if the AVD
-            # is running on a different source
-            "--allow-cors": True
+            "--allow-cors": True,
+            "--session-override": True
         }
         # check if the service is running
         if not self.appium_service.is_running:
