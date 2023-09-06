@@ -51,13 +51,14 @@ class PradeshLevelDEPage(BasePage):
     Edit = "com.saral.application:id/tv_edit"
     Delete = "com.saral.application:id/tv_delete"
     BackButton = "com.saral.application:id/iv_back"
+    AddEntry = "com.saral.application:id/fab_add"
     SortingTypes = []
     SubUnits = []
     KaryakartaServices = []
 
     def pradeshIsEnabled(self, pradesh: str):
         """
-        Choose Pardesh name when entering Sangathan Page first time
+        Choose Pradesh name when entering Sangathan Page first time
         :return: None
         """
         try:
@@ -253,6 +254,17 @@ class PradeshLevelDEPage(BasePage):
         try:
             self.clickElement(self.CallIcon, "id")
             self.log.info("Clicked on Call Icon")
+        except Exception as e:
+            traceback.print_exception(type(e), e, e.__traceback__)
+
+    def clickAddEntryButton(self):
+        """
+        Click on Add new entry button
+        :return: self.clickAddEntryButton
+        """
+        try:
+            self.clickElement(self.AddEntry, "id")
+            self.log.info("Adding a new Entry")
         except Exception as e:
             traceback.print_exception(type(e), e, e.__traceback__)
 
